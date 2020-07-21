@@ -1,13 +1,10 @@
-const express = require("express");
-const socketio = require("socket.io");
-const bodyParser = require("body-parser");
+// Setup basic express server
+var express = require('express');
+var app = express();
+var path = require('path');
 const http = require("http");
-const app = express();
-
-server = http.createServer(app);
-const io = socketio(server);
-
-const clients = [];
+const socket = require('socket.io');
+var port = 8888;
 
 app.use(
     express.urlencoded({
@@ -15,36 +12,76 @@ app.use(
     })
 );
 
-/**
- * Initialize Server
- */
-server.listen(8888, function() {
-    console.log("Servidor Rodando na Porta 8888");
+var server = http.createServer(app).listen(port, function(){
+    console.log("Express server listening on port " + port);
 });
 
-/**
- * Página de Teste
- */
-app.get("/", function(req, res) {
-    res.send("Servidor Rodando...");
+var io = socket.listen(server);
+    io.sockets.on('connection', function () {
+    console.log('hello world im a hot socket');
 });
 
-// Recebe requisição do Laravel
-app.post("/like", function(req, res) {
-    var params = req.body;
-    var clients = io.sockets.clients().sockets;
+// Routing
+app.use(express.static(path.join(__dirname, 'public')));
 
-    for (const key in clients) {
-        if (key != params.id) clients[key].emit("like", params);
-    }
+// Chatroom
 
-    res.send();
-});
+var numUsers = 0;
 
-// Recebe conexão dos usuários no servidor
-io.on("connection", function(client) {
-    // Adicionado clientes
-    client.emit("welcome", {
-        id: client.id
+io.on('connection', (socket) => {
+  var addedUser = false;
+
+  // when the client emits 'new message', this listens and executes
+  socket.on('new message', (data) => {
+    // we tell the client to execute 'new message'
+    socket.broadcast.emit('new message', {
+      username: socket.username,
+      message: data
     });
+  });
+
+  // when the client emits 'add user', this listens and executes
+  socket.on('add user', (username) => {
+    if (addedUser) return;
+
+    // we store the username in the socket session for this client
+    socket.username = username;
+    ++numUsers;
+    addedUser = true;
+    socket.emit('login', {
+      numUsers: numUsers
+    });
+    // echo globally (all clients) that a person has connected
+    socket.broadcast.emit('user joined', {
+      username: socket.username,
+      numUsers: numUsers
+    });
+  });
+
+  // when the client emits 'typing', we broadcast it to others
+  socket.on('typing', () => {
+    socket.broadcast.emit('typing', {
+      username: socket.username
+    });
+  });
+
+  // when the client emits 'stop typing', we broadcast it to others
+  socket.on('stop typing', () => {
+    socket.broadcast.emit('stop typing', {
+      username: socket.username
+    });
+  });
+
+  // when the user disconnects.. perform this
+  socket.on('disconnect', () => {
+    if (addedUser) {
+      --numUsers;
+
+      // echo globally that this client has left
+      socket.broadcast.emit('user left', {
+        username: socket.username,
+        numUsers: numUsers
+      });
+    }
+  });
 });

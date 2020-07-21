@@ -16,42 +16,11 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>
     $(document).ready(function() {
-        var socket  = io('http://www.cupdown.com.br:8888/');
-        var urlBase = 'http://www.cupdown.com.br/company5';
-        var me      = 0;
 
-        $('#like').click(function(event){
-            event.preventDefault();
-            var self = $(this);
-
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-            });
-
-            // Envio um AJAX para o Laravel
-            $.ajax({
-                url: urlBase + '/like',
-                type: "POST",
-                data: {
-
-                    name    : self.data('name'),
-                    id      : me
-                },
-                success: function(result){
-                    console.log('Sucesso!');
-                }
-            });
-        });
-        alert();
         let subdomain = 'cupdown';
         Echo.join(`room.${subdomain}`)
         .here((users) => {
@@ -62,31 +31,6 @@
         })
         .leaving((user) => {
             console.log(user);
-        });
-
-
-        // Registra usuário no Socket
-        socket.on('welcome', function(data){
-            me = data.id;
-        });
-
-        /**
-        * Recebe notificação de like
-        */
-        socket.on('like', function(response){
-            
-            toastr.success('Notificação de LIKE', response.message)
-            /*
-            $.toast({
-                heading: 'Notificação de LIKE',
-                text: response.message,
-                loader: true,
-                hideAfter: 15000,
-                loaderBg: '#000000',
-                bgColor: '#385bdc',
-                textColor: 'white'
-            });
-            */
         });
     });
     </script>
