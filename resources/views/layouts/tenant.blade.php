@@ -19,20 +19,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
 
     <script>
-    $(document).ready(function() {
+    let usuario = {};
+    usuario.token = '{{ session("tokenjwt") }}';
 
-        let subdomain = 'cupdown';
-        Echo.join(`room.${subdomain}`)
-        .here((users) => {
-            console.log(users);
-        })
-        .joining((user) => {
-            console.log(user);
-        })
-        .leaving((user) => {
-            console.log(user);
-        });
-    });
+    localStorage.setItem('usuario', JSON.stringify(usuario));
     </script>
 </head>
 <body>

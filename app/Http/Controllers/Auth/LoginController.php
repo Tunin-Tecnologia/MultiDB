@@ -72,6 +72,49 @@ class LoginController extends Controller
     protected function guard()
     {
         $guard = \Tenant::isTenantRequest() ? 'tenant':'system';
+        \Log::info('guard - '. json_encode($guard));
         return \Auth::guard($guard);
+    }
+
+        /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $data = $request->only('email', 'password');
+        $token = \Auth::guard('api')->attempt($data);
+
+        // $empresa = Empresa::where('ciid', '=', $user['ciidempresa'])->get()->first()->toArray();
+        
+        // $dados = json_decode($empresa['jsdados'], true);
+        // $config = json_decode($empresa['jsconfig'], true);
+        // $empresa = array_merge($dados, $config);
+        // $empresa = Arr::only($empresa, ['vccidade', 'ccestado', 'bostorage', 'cistorage', 'cidecimais']);
+
+        // if($user['vcfoto'] == 'ñ informado') {
+        //     $user['vcfoto'] = \Gravatar::src($user['email']);
+        // } else {
+        //     $user['vcfoto'] = 'storage/2/avatar/'. $user['vcfoto'];
+        // }
+
+        // $whatsapp = soNumero($user['obtelefones']['Whatsapp'][0]);
+
+        // Registrando sessões
+        session(['id'           => $user['id']]);
+        session(['prefix'       => \Request::route('prefix')]);
+        // session(['idempresa'    => $user['ciidempresa']]);
+        session(['login'        => $user['email']]);
+        session(['nome'         => $user['name']]);
+        // session(['cargo'        => @$user['vccargo']]);
+        // session(['segmento'     => 1]);
+        // session(['foto'         => $user['vcfoto']]);
+        // session(['userid'       => '55'. $whatsapp .'@c.br']);
+        // session(['lockedscreen' => 2]);
+        // session(['config'       => $empresa]);
+        session(['tokenjwt'        => $token]);    
     }
 }

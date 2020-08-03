@@ -81,10 +81,6 @@
                 
             <div class="content">
 
-                <div id="app">
-                    <example-component usr-id="{{ \Auth::user()->id }}"></example-component>
-                </div>
-
                 <div class="links">
                     <a href="https://laravel.com/docs">Docs</a>
                     <a href="https://laracasts.com">Laracasts</a>
@@ -98,6 +94,5 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
     </body>
 </html>

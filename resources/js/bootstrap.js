@@ -42,10 +42,22 @@ if (token) {
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-console.log('_token', token.content);
+
+var usuario = JSON.parse(localStorage.getItem('usuario'));
+
+
+console.log('_token', usuario.token);
+
 import Echo from 'laravel-echo'
+
 window.io = require('socket.io-client');
+
 window.Echo = new Echo({
     broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001'
+    host: window.location.hostname + ':6001',
+    auth: {
+        headers: {
+            Authorization: 'Bearer ' + usuario.token
+        },
+    }
 });

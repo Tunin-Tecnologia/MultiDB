@@ -16,13 +16,12 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 
-Broadcast::channel('mensagem-recebida.{id}', function ($usr, $id) {
+Broadcast::channel('mensagem-'. \Request::route('prefix') .'.{id}', function ($usr, $id) {
     \Log::info('Channels - '. json_encode($usr) .' <> '. json_encode($id));
     return (int) $usr->id === (int) $id;
 });
 
 Broadcast::channel('room.{account}', function ($usr, $account) {
-    dd('passei');
     \Log::info('Channels - '. json_encode($usr) .' <> '. json_encode($account));
     return true;
 });

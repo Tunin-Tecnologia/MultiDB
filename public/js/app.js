@@ -2009,7 +2009,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['usrId'],
+  props: ['usrId', 'company'],
   data: function data() {
     return {
       mensagens: []
@@ -2018,7 +2018,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    Echo["private"]('mensagem-recebida.' + this.usrId).listen('EnviarMensagem', function (e) {
+    Echo["private"]('mensagem-' + this.company + '.' + this.usrId).listen('EnviarMensagem', function (e) {
       console.log(e);
 
       _this.mensagens.push(e);
@@ -61630,12 +61630,18 @@ if (token) {
  */
 
 
-console.log('_token', token.content);
+var usuario = JSON.parse(localStorage.getItem('usuario'));
+console.log('_token', usuario.token);
 
 window.io = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'socket.io',
-  host: window.location.hostname + ':6001'
+  host: window.location.hostname + ':6001',
+  auth: {
+    headers: {
+      Authorization: 'Bearer ' + usuario.token
+    }
+  }
 });
 
 /***/ }),

@@ -27,6 +27,8 @@ class EnviarMensagem implements ShouldBroadcast
      */
     public function __construct(Mensagem $mensagem, UserTenant $usr)
     {
+        \Log::info('__construct usr- '.  json_encode($usr, JSON_UNESCAPED_UNICODE));
+        \Log::info('__construct msg- '.  json_encode($mensagem, JSON_UNESCAPED_UNICODE));
         $this->usr = $usr;
         $this->mensagem = $mensagem;
     }
@@ -38,8 +40,8 @@ class EnviarMensagem implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        \Log::info('broadcastOn - '.  $this->usr->id);
-        return new PrivateChannel('mensagem-recebida.'. $this->usr->id);
+        \Log::info('broadcastOn idusr - mensagem-'. \Request::route('prefix') .'.'. $this->mensagem->idusr);
+        return new PrivateChannel('mensagem-'. \Request::route('prefix') .'.'. $this->mensagem->idusr);
     }
 
     public function broadcastWith() {

@@ -22,7 +22,8 @@
 <script>
     export default {
         props: [
-            'usrId'
+            'usrId',
+            'company'
         ],
         data() {
             return {
@@ -31,7 +32,7 @@
         },
         mounted() {
 
-            Echo.private('mensagem-recebida.'+ this.usrId)
+            Echo.private('mensagem-'+ this.company +'.'+ this.usrId)
             .listen('EnviarMensagem', (e) => {
                 console.log(e);
                 this.mensagens.push(e)

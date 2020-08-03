@@ -6,8 +6,8 @@
             <div class="col-md-8">
 
                 <div id="app">
-                    <example-component usr-id="{{ \Auth::guard('tenant')->user()->id }}"></example-component>
-                </div>        
+                    <example-component usr-id="{{ \Auth::guard('tenant')->user()->id }}" company="{{ \Request::route('prefix') }}"></example-component>
+                </div> 
 
                 <div class="card">
 

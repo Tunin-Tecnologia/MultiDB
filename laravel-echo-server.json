@@ -1,5 +1,5 @@
 {
-	"authHost": "http://www.cupdown.com.br",
+	"authHost": "http://www.qr2.com.br",
 	"authEndpoint": "/api/broadcasting/auth",
 	"clients": [
 		{

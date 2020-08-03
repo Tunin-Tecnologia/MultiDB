@@ -8,6 +8,24 @@ class UserTenant extends BaseUser implements JWTSubject
 {
     protected $connection = 'tenant';
     protected $table = 'tenant_users';
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nome', 'email', 'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -16,7 +34,7 @@ class UserTenant extends BaseUser implements JWTSubject
      */
     public function getJWTIdentifier()
     {
-        return $this->ciid;
+        return $this->id;
     }
 
     /**
@@ -27,8 +45,9 @@ class UserTenant extends BaseUser implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-            'name' => $this->name,
-            'email' => $this->email
+            'email' => $this->email,
+            'nome' => $this->nome
         ];
     }
+
 }

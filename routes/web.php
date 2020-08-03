@@ -10,9 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('/broadcasting/auth', function(Request $req) {
-    \Log::info('Web - ');
-    //Broadcast::auth($req);
+Route::group(['middleware' => ['jwt.verify']], function() {
+    Route::post('broadcasting/auth', 'Auth\BroadcastController@authenticate');
 });
 
 Route::get('/', function () {
@@ -30,6 +29,7 @@ Route::group(['prefix' => '/system', 'as' => 'system.'], function () {
 });
 
 Route::group(['prefix' => '/{prefix}', 'as' => 'tenant.'], function () {
+
     Auth::routes();
 
     Route::group(['middleware' => 'auth:tenant'], function(){

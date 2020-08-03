@@ -26,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Tenant::loadConnections();
+        Schema::defaultStringLength(191);
     }
 }

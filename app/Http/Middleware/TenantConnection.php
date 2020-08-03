@@ -18,6 +18,7 @@ class TenantConnection
     {
         $prefix = $request->route('prefix');
         $company = null;
+        \Log::info('TenantConnection handle - '. $prefix .' - '. json_encode($request->all()));
         if ($prefix) {
             $company = Company::where('prefix', $prefix)->first();
             if ($company) {

@@ -25,7 +25,7 @@ class LikeListener
      */
     public function handle($event)
     {
-        $urlSite        = 'http://www.cupdown.com.br:8888/';
+        $urlSite        = 'http://www.qr2.com.br:8888/';
         $urlWebSocket   = $urlSite.$event->endpoint;
         $dataParams     = http_build_query($event->params);
         $ch             = curl_init();

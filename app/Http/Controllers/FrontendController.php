@@ -14,7 +14,7 @@ class FrontendController extends Controller
             'id'        => $request->get('id')
         ];
         $user = \Auth::user();
-        $account = 'cupdown';
+        $account = 'qr2';
         broadcast(new \App\Events\SendStatus($user, $account));
 
         // FIRE EVENT

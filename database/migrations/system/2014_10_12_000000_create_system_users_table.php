@@ -15,13 +15,14 @@ class CreateSystemUsersTable extends Migration
     public function up()
     {
         Schema::create('system_users', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->primary(['id']);
         });
 
         DB::statement("ALTER TABLE `system_users` CHANGE `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT");

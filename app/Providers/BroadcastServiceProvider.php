@@ -16,7 +16,7 @@ class BroadcastServiceProvider extends ServiceProvider
     {
         Broadcast::routes();
 
-        #Broadcast::routes(["prefix" => "api", "middleware" => "auth:system"]);
+        #Broadcast::routes(["middleware" => "jwt.verify"]);
         \Log::info('Broadcast - ');
         require base_path('routes/channels.php');
     }

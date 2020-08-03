@@ -47,7 +47,7 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'jwt',
             'provider' => 'tenant_users',
             'hash' => true,
         ],
